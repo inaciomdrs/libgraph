@@ -33,6 +33,24 @@ int main(int argc, char **argv)
 		cout << endl;
 	}
 
+	cout << "Running dfs..." << endl;
+	int FIRST_VERTEX = 0;
+
+	graph_data dfs_data = dfs(graph,size,FIRST_VERTEX);
+
+	cout << "Colors: ";
+	for (int i = 0; i < size; ++i)
+	{
+		cout << dfs_data.colors[i] << " ";
+	}
+	cout << endl;
+
+	cout << "Parents: ";
+	for (int i = 0; i < size; ++i)
+	{
+		cout << "parent[" << i << "]: " << dfs_data.parents[i] << endl;
+	}
+
 	// Clean data
 	for(int i = 0; i < size; i++)
 	{
