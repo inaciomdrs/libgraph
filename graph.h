@@ -1,6 +1,9 @@
-#include <list>
 #include <cstdlib>
 #include <ctime>
+#include <list>
+#include <map>
+#include <queue>
+#include <utility>
 
 using namespace std;
 
@@ -8,6 +11,8 @@ using namespace std;
 #define __GRAPH_H__
 
 typedef list<int>* Graph;
+typedef pair<int,int> Edge;
+typedef map<edge,double> Edge_Weight;
 
 typedef enum {
 	white, gray, black

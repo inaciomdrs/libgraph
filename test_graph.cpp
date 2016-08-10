@@ -4,7 +4,7 @@
 int main(int argc, char **argv)
 {
 	int size;
-	cin >> size;	
+	cin >> size;
 
 	int **matrix = new int*[size];
 
@@ -49,6 +49,29 @@ int main(int argc, char **argv)
 	for (int i = 0; i < size; ++i)
 	{
 		cout << "parent[" << i << "]: " << dfs_data.parents[i] << endl;
+	}
+
+	cout << "Running bfs..." << endl;
+
+	graph_data bfs_data = bfs(graph,size,FIRST_VERTEX);
+
+	cout << "Colors: ";
+	for (int i = 0; i < size; ++i)
+	{
+		cout << bfs_data.colors[i] << " ";
+	}
+	cout << endl;
+
+	cout << "Parents: ";
+	for (int i = 0; i < size; ++i)
+	{
+		cout << "parent[" << i << "]: " << bfs_data.parents[i] << endl;
+	}
+
+	cout << "Distances: ";
+	for (int i = 0; i < size; ++i)
+	{
+		cout << "distances[" << i << "," << " 0]: " << bfs_data.distances[i] << endl;
 	}
 
 	// Clean data
