@@ -1,8 +1,6 @@
 #include <iostream>
 #include "graph.h"
 
-#define FIRST_VERTEX 0
-
 void print_graph(Graph graph, int size){
 	list<int> neighbours;
 	int number_of_neighbours;
@@ -79,6 +77,32 @@ void check_reachability(Graph graph, int size){
 	cout << "reachable each other" << endl;
 }
 
+void print_path(list<int> path){
+	for (list<int>::iterator i = path.begin(); i != path.end(); ++i)
+	{
+		cout << *i << " ";
+	}
+	cout << endl;
+}
+
+void check_path(Graph graph, int size){
+	int vertex_u, vertex_v;
+
+	cout << "Checking existence of path..." << endl;
+	cin  >> vertex_u >> vertex_v;
+
+	list<int> path = path_between(graph,size,vertex_u,vertex_v);
+
+	cout << "There is ";
+
+	if(path.size() == 0){
+		cout << "no path between " << vertex_u << " and " << vertex_v << endl;
+	} else {
+		cout << "a path between " << vertex_u << " and " << vertex_v << endl;
+		print_path(path);
+	}
+}
+
 int main(int argc, char **argv)
 {
 	int size;
@@ -99,7 +123,17 @@ int main(int argc, char **argv)
 	
 	print_graph(graph,size);
 
-	check_reachability(graph,size);
+	cout << "Is this graph connected? ";
+
+	if(is_connected(graph,size)){
+		cout << "Yes";
+	} else {
+		cout << "No";
+	}
+
+	cout << endl;
+
+	check_path(graph,size);
 
 	// Clean data
 	for(int i = 0; i < size; i++)

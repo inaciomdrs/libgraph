@@ -1,5 +1,4 @@
 #include "graph.h"
-#include <iostream>
 
 Graph build_graph(int** matrix, int size) {
 	Graph graph = new list<int>[size];
@@ -124,4 +123,39 @@ bool is_reachable(Graph graph, int number_of_vertices, int vertex_u, int vertex_
 	}
 	
 	return false;
+}
+
+list<int> path_between(Graph graph, int number_of_vertices, int vertex_u, int vertex_v){
+	list<int> path;
+
+	graph_data g_data = bfs(graph,number_of_vertices,vertex_u);
+	
+	int vertex_v_color = g_data.colors[vertex_v];
+	
+	if(vertex_v_color != white){
+		make_path(vertex_u,vertex_v,g_data.parents,path);
+	}
+
+	return path;
+
+}
+
+void make_path(int vertex_u, int vertex_v, int *parents, list<int> & path){
+	for(int vertex = vertex_v; vertex != vertex_u; vertex = parents[vertex]){
+		path.push_front(vertex);
+	}
+	path.push_front(vertex_u);
+}
+
+bool is_connected(Graph graph, int number_of_vertices){
+	
+	graph_data g_data = dfs(graph,number_of_vertices,FIRST_VERTEX);
+	color *colors = g_data.colors;
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		if(colors[i] == white){
+			return false;
+		}
+	}
+	return true;
 }

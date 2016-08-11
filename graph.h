@@ -27,6 +27,8 @@ typedef struct {
 #define FALSE 0
 #define TRUE  1
 
+#define FIRST_VERTEX 0
+
 #define NO_PARENT -1
 
 Graph build_graph(int** matrix, int size);
@@ -40,5 +42,11 @@ void dfs_visit(Graph graph, int number_of_vertices, int start_vertex, graph_data
 graph_data bfs(Graph graph, int number_of_vertices, int start_vertex);
 
 bool is_reachable(Graph graph, int number_of_vertices, int vertex_u, int vertex_v);
+
+list<int> path_between(Graph graph, int number_of_vertices, int vertex_u, int vertex_v);
+
+void make_path(int vertex_u, int vertex_v, int *parents, list<int> & path);
+
+bool is_connected(Graph graph, int number_of_vertices);
 
 #endif
