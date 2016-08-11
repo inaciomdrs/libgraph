@@ -133,6 +133,16 @@ int main(int argc, char **argv)
 
 	cout << endl;
 
+	cout << "Is there any cycle in this graph? ";
+
+	if(has_cycle(graph,size)){
+		cout << "Yes";
+	} else {
+		cout << "No";
+	}
+
+	cout << endl;
+
 	check_path(graph,size);
 
 	// Clean data

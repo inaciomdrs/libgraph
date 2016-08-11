@@ -1,6 +1,8 @@
-from random import choice
+from random import choice, randint
 
 def generate_matrix(size=10):
+	print(size)
+
 	matrix = [[choice([0,1]) for i in range(size)] for i in range(size)]
 
 	for i in range(size):
@@ -10,6 +12,15 @@ def generate_matrix(size=10):
 
 	for line in matrix:
 		print(*line)
+	
+	u = randint(0,size)
+	v = u
+	while v == u:
+		v = randint(0,size)
+
+	print(u)
+	print(v)
+
 
 size = int(input())
 generate_matrix(size)

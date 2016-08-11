@@ -159,3 +159,72 @@ bool is_connected(Graph graph, int number_of_vertices){
 	}
 	return true;
 }
+
+#include <iostream>
+bool has_cycle(Graph graph, int number_of_vertices){
+	color *colors = new color[number_of_vertices];
+	int *parents = new int[number_of_vertices];
+
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		colors[i] = white;
+		parents[i] = NO_PARENT;
+	}
+	colors[FIRST_VERTEX] = gray;
+
+	int vertex_v = FIRST_VERTEX;
+
+	int has_it_cycle = detect_cycles(graph,number_of_vertices,FIRST_VERTEX,colors,parents);
+	
+	if(has_it_cycle){
+		return true;
+	}
+
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		if(colors[i] == white){
+			has_it_cycle = detect_cycles(graph,number_of_vertices,i,colors,parents);
+			if(has_it_cycle){
+				return true;
+			}
+		}
+	}
+
+	return false;
+
+}
+
+bool detect_cycles(Graph graph, int number_of_vertices, int vertex_v, color* & colors, int* & parents){
+	queue<int> Q;
+	Q.push(vertex_v);
+
+	int vertex = vertex_v;
+	list<int> neighbours;
+	while(!Q.empty())
+	{
+		vertex = Q.front();
+		Q.pop();
+		neighbours = graph[vertex];
+
+		for(list<int>::iterator it = neighbours.begin(); it != neighbours.end(); it++)
+		{
+			if(*it == parents[vertex])
+			{
+				continue;
+			}
+			else if(colors[*it] == white)
+			{
+				Q.push(*it);
+				colors[*it] = gray;
+				parents[*it] = vertex;
+			}
+			else
+			{
+				return true;
+			}
+		}
+
+		colors[vertex] = black;	
+	}
+	return false;
+}

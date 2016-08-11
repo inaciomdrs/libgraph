@@ -49,4 +49,8 @@ void make_path(int vertex_u, int vertex_v, int *parents, list<int> & path);
 
 bool is_connected(Graph graph, int number_of_vertices);
 
+bool has_cycle(Graph graph, int number_of_vertices);
+
+bool detect_cycles(Graph graph, int number_of_vertices, int vertex_v, color* & colors, int* & parents);
+
 #endif
