@@ -1,25 +1,9 @@
 #include <iostream>
 #include "graph.h"
 
-int main(int argc, char **argv)
-{
-	int size;
-	cin >> size;
+#define FIRST_VERTEX 0
 
-	int **matrix = new int*[size];
-
-	for(int i = 0; i < size; i++)
-	{
-		matrix[i] = new int[size];
-		for (int j = 0; j < size; ++j)
-		{
-			cin >> matrix[i][j];
-		}
-	}
-
-
-	Graph graph = build_graph(matrix,size);
-
+void print_graph(Graph graph, int size){
 	list<int> neighbours;
 	int number_of_neighbours;
 	for (int i = 0; i < size; ++i)
@@ -32,9 +16,10 @@ int main(int argc, char **argv)
 		}
 		cout << endl;
 	}
+}
 
+void run_dfs(Graph graph, int size){
 	cout << "Running dfs..." << endl;
-	int FIRST_VERTEX = 0;
 
 	graph_data dfs_data = dfs(graph,size,FIRST_VERTEX);
 
@@ -50,7 +35,9 @@ int main(int argc, char **argv)
 	{
 		cout << "parent[" << i << "]: " << dfs_data.parents[i] << endl;
 	}
+}
 
+void run_bfs(Graph graph, int size){
 	cout << "Running bfs..." << endl;
 
 	graph_data bfs_data = bfs(graph,size,FIRST_VERTEX);
@@ -73,6 +60,46 @@ int main(int argc, char **argv)
 	{
 		cout << "distances[" << i << "," << " 0]: " << bfs_data.distances[i] << endl;
 	}
+}
+
+void check_reachability(Graph graph, int size){
+	int vertex_u, vertex_v;
+
+	cout << "Checking out reachability..." << endl;
+	cin  >> vertex_u >> vertex_v;
+
+	bool are_reachable = is_reachable(graph,size,vertex_u,vertex_v);
+
+	cout << vertex_u << " and " << vertex_v << " are ";
+	
+	if(!are_reachable){
+		cout << "not ";
+	}
+
+	cout << "reachable each other" << endl;
+}
+
+int main(int argc, char **argv)
+{
+	int size;
+	cin >> size;
+
+	int **matrix = new int*[size];
+
+	for(int i = 0; i < size; i++)
+	{
+		matrix[i] = new int[size];
+		for (int j = 0; j < size; ++j)
+		{
+			cin >> matrix[i][j];
+		}
+	}
+
+	Graph graph = build_graph(matrix,size);
+	
+	print_graph(graph,size);
+
+	check_reachability(graph,size);
 
 	// Clean data
 	for(int i = 0; i < size; i++)

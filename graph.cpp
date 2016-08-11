@@ -1,13 +1,13 @@
 #include "graph.h"
+#include <iostream>
 
 Graph build_graph(int** matrix, int size) {
 	Graph graph = new list<int>[size];
 
 	for (int i = 0; i < size; ++i) {
-		for (int j = 0; j < i; ++j) {
+		for (int j = 0; j < size; ++j) {
 			if(matrix[i][j] == TRUE){
 				graph[i].push_back(j);
-				graph[j].push_back(i);
 			}
 		}
 	}
@@ -94,4 +94,34 @@ graph_data bfs(Graph graph, int number_of_vertices, int start_vertex){
 	}
 
 	return traverse_data;
+}
+
+bool is_reachable(Graph graph, int number_of_vertices, int vertex_u, int vertex_v){
+	color* colors = new color[number_of_vertices];
+
+	queue<int> Q;
+	colors[vertex_u] = gray;
+
+	Q.push(vertex_u);
+
+	int vertex;
+	list<int> neighbours;
+	while(!Q.empty())
+	{
+		vertex = Q.front();
+		Q.pop();
+		neighbours = graph[vertex];
+
+		for(list<int>::iterator it = neighbours.begin(); it != neighbours.end(); it++)
+		{
+			if(*it == vertex_v){
+				return true;
+			} else if(colors[*it] == white){
+				colors[*it] = gray;
+				Q.push(*it);
+			}
+		}
+	}
+	
+	return false;
 }

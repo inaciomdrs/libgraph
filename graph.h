@@ -12,7 +12,7 @@ using namespace std;
 
 typedef list<int>* Graph;
 typedef pair<int,int> Edge;
-typedef map<edge,double> Edge_Weight;
+typedef map<Edge,double> Edge_Weight;
 
 typedef enum {
 	white, gray, black
@@ -38,5 +38,7 @@ graph_data dfs(Graph graph, int number_of_vertices, int start_vertex);
 void dfs_visit(Graph graph, int number_of_vertices, int start_vertex, graph_data & data);
 
 graph_data bfs(Graph graph, int number_of_vertices, int start_vertex);
+
+bool is_reachable(Graph graph, int number_of_vertices, int vertex_u, int vertex_v);
 
 #endif
