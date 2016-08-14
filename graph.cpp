@@ -49,7 +49,7 @@ int out_degree(Graph graph, int number_of_vertices, int vertex){
 	return neighbours(graph,vertex).size();
 }
 
-int degree(Graph graph, int number_of_vertices, int vertex){
+int degree_of(Graph graph, int number_of_vertices, int vertex){
 	return out_degree(graph,number_of_vertices,vertex);
 }
 
@@ -190,28 +190,19 @@ bool is_connected(Graph graph, int number_of_vertices){
 }
 
 bool has_cycle(Graph graph, int number_of_vertices){
-	color *colors = new color[number_of_vertices];
-	int *parents = new int[number_of_vertices];
+	bool *visited = new bool[number_of_vertices];
 
 	for (int i = 0; i < number_of_vertices; ++i)
 	{
-		colors[i] = white;
-		parents[i] = NO_PARENT;
+		visited[i] = false;
 	}
-	colors[FIRST_VERTEX] = gray;
 
-	int vertex_v = FIRST_VERTEX;
-
-	int has_it_cycle = detect_cycles(graph,number_of_vertices,FIRST_VERTEX,colors,parents);
-	
-	if(has_it_cycle){
-		return true;
-	}
+	bool has_it_cycle;
 
 	for (int i = 0; i < number_of_vertices; ++i)
 	{
-		if(colors[i] == white){
-			has_it_cycle = detect_cycles(graph,number_of_vertices,i,colors,parents);
+		if(!visited[i]){
+			has_it_cycle = detect_cycles(graph,number_of_vertices,i,visited);
 			if(has_it_cycle){
 				return true;
 			}
@@ -222,7 +213,16 @@ bool has_cycle(Graph graph, int number_of_vertices){
 
 }
 
-bool detect_cycles(Graph graph, int number_of_vertices, int vertex_v, color* & colors, int* & parents){
+bool detect_cycles(Graph graph, int number_of_vertices, int vertex_v, bool* & visited){
+	color *colors = new color[number_of_vertices];
+	int *parents = new int[number_of_vertices];
+
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		colors[i] = white;
+		parents[i] = NO_PARENT;
+	}
+
 	queue<int> Q;
 	Q.push(vertex_v);
 
@@ -236,15 +236,16 @@ bool detect_cycles(Graph graph, int number_of_vertices, int vertex_v, color* & c
 
 		for(list<int>::iterator it = v_neighbours.begin(); it != v_neighbours.end(); it++)
 		{
-			if(*it == parents[vertex])
+			if(*it == parents[vertex]) // condition used for undirected graphs
 			{
 				continue;
-			}
+			} 
 			else if(colors[*it] == white)
 			{
 				Q.push(*it);
 				colors[*it] = gray;
 				parents[*it] = vertex;
+				visited[*it] = true;
 			}
 			else
 			{
@@ -255,4 +256,52 @@ bool detect_cycles(Graph graph, int number_of_vertices, int vertex_v, color* & c
 		colors[vertex] = black;	
 	}
 	return false;
+}
+
+list<int> topological_sort(Graph graph, int number_of_vertices){
+	int *degrees = new int[number_of_vertices];
+	bool *included = new bool[number_of_vertices];
+
+	list<int> total_order;
+
+	queue<int> Q;
+
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		degrees[i] = in_degree(graph,number_of_vertices,i);
+		if(degrees[i] == 0){
+			total_order.push_back(i);
+			Q.push(i);
+			included[i] = true;
+		} else {
+			included[i] = false;
+		}
+	}	
+
+	int vertex;
+	list<int> vertex_neighbours;
+	while(!Q.empty()){
+		vertex = Q.front();
+		Q.pop();
+
+		vertex_neighbours = neighbours(graph,vertex);
+
+		for(list<int>::iterator it = vertex_neighbours.begin(); it != vertex_neighbours.end(); it++)
+		{
+			if((--degrees[*it] == 0) && (included[*it] == false)){
+				total_order.push_back(*it);
+				Q.push(*it);
+				included[*it] = true;
+			}
+		}		
+	}
+
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		if(!included[i]){
+			total_order.push_back(i);
+		}
+	}
+
+	return total_order;
 }

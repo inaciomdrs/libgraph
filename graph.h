@@ -42,7 +42,7 @@ int in_degree(Graph graph, int number_of_vertices, int vertex);
 
 int out_degree(Graph graph, int number_of_vertices, int vertex);
 
-int degree(Graph graph, int number_of_vertices, int vertex);
+int degree_of(Graph graph, int number_of_vertices, int vertex);
 
 graph_data dfs(Graph graph, int number_of_vertices, int start_vertex);
 
@@ -60,6 +60,8 @@ bool is_connected(Graph graph, int number_of_vertices);
 
 bool has_cycle(Graph graph, int number_of_vertices);
 
-bool detect_cycles(Graph graph, int number_of_vertices, int vertex_v, color* & colors, int* & parents);
+bool detect_cycles(Graph graph, int number_of_vertices, int vertex_v, bool* & visited);
+
+list<int> topological_sort(Graph graph, int number_of_vertices);
 
 #endif

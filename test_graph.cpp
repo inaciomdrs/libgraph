@@ -150,7 +150,13 @@ int main(int argc, char **argv)
 
 	cout << endl;
 
-	check_path(graph,size);
+	cout << "Topological ordering for this graph\n";
+	list<int> order = topological_sort(graph,size);
+
+	for(list<int>::iterator it = order.begin(); it != order.end(); it++){
+		cout << *it << " ";
+	}
+	cout << endl;
 
 	return 0;
 }
