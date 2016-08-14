@@ -14,6 +14,17 @@ Graph build_graph(int** matrix, int size) {
 	return graph;	
 }
 
+Graph build_graph(list<Edge> edge_list, int vertex_quantity){
+	Graph graph = new list<int>[vertex_quantity];	
+
+	for (list< Edge >::iterator i = edge_list.begin(); i != edge_list.end(); ++i)
+	{
+		graph[i->first].push_back(i->second);
+	}
+
+	return graph;
+}
+
 graph_data initialize_graph_data(int size){
 	graph_data data;
 	
@@ -177,8 +188,18 @@ void make_path(int vertex_u, int vertex_v, int *parents, list<int> & path){
 }
 
 bool is_connected(Graph graph, int number_of_vertices){
-	
-	graph_data g_data = dfs(graph,number_of_vertices,FIRST_VERTEX);
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		if(!test_connectivity(graph,number_of_vertices,i)){
+			return false;
+		}
+	}
+
+	return true;
+}
+
+bool test_connectivity(Graph graph, int number_of_vertices, int vertex){
+	graph_data g_data = dfs(graph,number_of_vertices,vertex);
 	color *colors = g_data.colors;
 	for (int i = 0; i < number_of_vertices; ++i)
 	{

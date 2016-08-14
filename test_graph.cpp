@@ -108,18 +108,32 @@ int main(int argc, char **argv)
 	int size;
 	cin >> size;
 
-	int **matrix = new int*[size];
+	list<Edge> edges;
 
-	for(int i = 0; i < size; i++)
+	int vertex_u;
+	int vertex_v;
+
+	int edges_quantity = 0;
+
+	while(cin >> vertex_u >> vertex_v)
+	{
+		edges.push_back(make_pair(--vertex_u,--vertex_v));
+	}
+
+	Graph graph = build_graph(edges,size);
+
+	//int **matrix = new int*[size];
+
+	/*for(int i = 0; i < size; i++)
 	{
 		matrix[i] = new int[size];
 		for (int j = 0; j < size; ++j)
 		{
 			cin >> matrix[i][j];
 		}
-	}
+	}*/
 
-	Graph graph = build_graph(matrix,size);
+	// Graph graph = build_graph(matrix,size);
 	
 	print_graph(graph,size);
 

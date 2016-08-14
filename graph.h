@@ -13,7 +13,7 @@ using namespace std;
 
 typedef list<int>* Graph;
 typedef pair<int,int> Edge;
-typedef map<Edge,double> Edge_Weight;
+typedef map<Edge,double> weights;
 
 typedef enum {
 	white, gray, black
@@ -33,6 +33,8 @@ typedef struct {
 #define NO_PARENT -1
 
 Graph build_graph(int** matrix, int size);
+
+Graph build_graph(list<Edge> edge_list, int vertex_quantity);
 
 graph_data initialize_graph_data(int size);
 
@@ -57,6 +59,8 @@ list<int> path_between(Graph graph, int number_of_vertices, int vertex_u, int ve
 void make_path(int vertex_u, int vertex_v, int *parents, list<int> & path);
 
 bool is_connected(Graph graph, int number_of_vertices);
+
+bool test_connectivity(Graph graph, int number_of_vertices, int vertex);
 
 bool has_cycle(Graph graph, int number_of_vertices);
 
