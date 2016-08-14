@@ -123,6 +123,13 @@ int main(int argc, char **argv)
 	
 	print_graph(graph,size);
 
+	cout << "Degrees" << endl;
+
+	for (int i = 0; i < size; ++i)
+	{
+		cout << i << " - IN: " << in_degree(graph,size,i) << " | OUT: " << out_degree(graph,size,i) << endl;
+	}
+
 	cout << "Is this graph connected? ";
 
 	if(is_connected(graph,size)){
@@ -144,15 +151,6 @@ int main(int argc, char **argv)
 	cout << endl;
 
 	check_path(graph,size);
-
-	// Clean data
-	for(int i = 0; i < size; i++)
-	{
-		delete matrix[i];
-	}
-
-	delete matrix;
-	delete graph;
 
 	return 0;
 }

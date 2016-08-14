@@ -24,6 +24,35 @@ graph_data initialize_graph_data(int size){
 	return data;
 }
 
+list<int> neighbours(Graph graph, int vertex){
+	return graph[vertex];
+}
+
+int in_degree(Graph graph, int number_of_vertices, int vertex){
+	list<int> vertex_neighbours;
+
+	int degree = 0;
+	for(int i = FIRST_VERTEX; i < number_of_vertices; i++){
+		if(i == vertex){ continue; }
+
+		vertex_neighbours = neighbours(graph,i);
+
+		if(find(vertex_neighbours.begin(),vertex_neighbours.end(),vertex) != vertex_neighbours.end()){
+			degree++;
+		}
+	}
+
+	return degree;
+}
+
+int out_degree(Graph graph, int number_of_vertices, int vertex){
+	return neighbours(graph,vertex).size();
+}
+
+int degree(Graph graph, int number_of_vertices, int vertex){
+	return out_degree(graph,number_of_vertices,vertex);
+}
+
 graph_data dfs(Graph graph, int number_of_vertices, int start_vertex){
 	graph_data traverse_data = initialize_graph_data(number_of_vertices);
 
@@ -42,9 +71,9 @@ graph_data dfs(Graph graph, int number_of_vertices, int start_vertex){
 void dfs_visit(Graph graph, int number_of_vertices, int start_vertex, graph_data & data){
 	data.colors[start_vertex] = gray;
 
-	list<int> neighbours = graph[start_vertex];
+	list<int> v_neighbours = neighbours(graph,start_vertex);
 
-	for(list<int>::iterator it = neighbours.begin(); it != neighbours.end(); it++){
+	for(list<int>::iterator it = v_neighbours.begin(); it != v_neighbours.end(); it++){
 		if(data.colors[*it] == white){
 			data.parents[*it] = start_vertex;
 			dfs_visit(graph,number_of_vertices,*it,data);
@@ -71,14 +100,14 @@ graph_data bfs(Graph graph, int number_of_vertices, int start_vertex){
 	Q.push(start_vertex);
 
 	int vertex;
-	list<int> neighbours;
+	list<int> v_neighbours;
 	while(!Q.empty())
 	{
 		vertex = Q.front();
 		Q.pop();
-		neighbours = graph[vertex];
+		v_neighbours = neighbours(graph,vertex);
 
-		for(list<int>::iterator it = neighbours.begin(); it != neighbours.end(); it++)
+		for(list<int>::iterator it = v_neighbours.begin(); it != v_neighbours.end(); it++)
 		{
 			if(traverse_data.colors[*it] == white)
 			{
@@ -104,14 +133,14 @@ bool is_reachable(Graph graph, int number_of_vertices, int vertex_u, int vertex_
 	Q.push(vertex_u);
 
 	int vertex;
-	list<int> neighbours;
+	list<int> v_neighbours;
 	while(!Q.empty())
 	{
 		vertex = Q.front();
 		Q.pop();
-		neighbours = graph[vertex];
+		v_neighbours = neighbours(graph,vertex);
 
-		for(list<int>::iterator it = neighbours.begin(); it != neighbours.end(); it++)
+		for(list<int>::iterator it = v_neighbours.begin(); it != v_neighbours.end(); it++)
 		{
 			if(*it == vertex_v){
 				return true;
@@ -160,7 +189,6 @@ bool is_connected(Graph graph, int number_of_vertices){
 	return true;
 }
 
-#include <iostream>
 bool has_cycle(Graph graph, int number_of_vertices){
 	color *colors = new color[number_of_vertices];
 	int *parents = new int[number_of_vertices];
@@ -199,14 +227,14 @@ bool detect_cycles(Graph graph, int number_of_vertices, int vertex_v, color* & c
 	Q.push(vertex_v);
 
 	int vertex = vertex_v;
-	list<int> neighbours;
+	list<int> v_neighbours;
 	while(!Q.empty())
 	{
 		vertex = Q.front();
 		Q.pop();
-		neighbours = graph[vertex];
+		v_neighbours = neighbours(graph,vertex);
 
-		for(list<int>::iterator it = neighbours.begin(); it != neighbours.end(); it++)
+		for(list<int>::iterator it = v_neighbours.begin(); it != v_neighbours.end(); it++)
 		{
 			if(*it == parents[vertex])
 			{

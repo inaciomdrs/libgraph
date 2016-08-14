@@ -1,3 +1,4 @@
+#include <algorithm>
 #include <cstdlib>
 #include <ctime>
 #include <list>
@@ -34,6 +35,14 @@ typedef struct {
 Graph build_graph(int** matrix, int size);
 
 graph_data initialize_graph_data(int size);
+
+list<int> neighbours(Graph graph, int vertex);
+
+int in_degree(Graph graph, int number_of_vertices, int vertex);
+
+int out_degree(Graph graph, int number_of_vertices, int vertex);
+
+int degree(Graph graph, int number_of_vertices, int vertex);
 
 graph_data dfs(Graph graph, int number_of_vertices, int start_vertex);
 
