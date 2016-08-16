@@ -164,13 +164,56 @@ int main(int argc, char **argv)
 
 	cout << endl;
 
-	cout << "Topological ordering for this graph\n";
-	list<int> order = topological_sort(graph,size);
-
+	cout << "Topological ordering (degree strategy) for this graph\n";
+	list<int> order = topological_sort_degree_strategy(graph,size);
 	for(list<int>::iterator it = order.begin(); it != order.end(); it++){
 		cout << *it << " ";
 	}
 	cout << endl;
+
+	cout << "Topological ordering (dfs strategy) for this graph\n";
+	order = topological_sort_dfs_strategy(graph,size);
+	for(list<int>::iterator it = order.begin(); it != order.end(); it++){
+		cout << *it << " ";
+	}
+	cout << endl;
+
+	cout << "Reachability Matrix" << endl;
+	int **matrix = simple_reachability_matrix(graph,size);
+	for (int i = 0; i < size; ++i)
+		{
+			for (int j = 0; j < size; ++j)
+			{
+				cout << matrix[i][j] << " ";
+			}
+			cout << endl;
+		}
+
+	cout << "Transitive Closure" << endl;
+	matrix = transitive_closure(graph,size);
+	for (int i = 0; i < size; ++i)
+		{
+			for (int j = 0; j < size; ++j)
+			{
+				cout << matrix[i][j] << " ";
+			}
+			cout << endl;
+		}	
+
+	cout << "Connected Components" << endl;
+	Connected_Components components = connected_components(graph,size);
+
+	list<int> elements;
+	for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
+	{
+		cout << "[" << i->first << "] ~ ";
+		elements = i->second;
+		for (list<int>::iterator elem = elements.begin(); elem != elements.end(); ++elem)
+		{
+			cout << *elem << " ";
+		}
+		cout << endl;
+	}
 
 	return 0;
 }

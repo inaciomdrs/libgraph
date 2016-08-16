@@ -13,6 +13,7 @@ using namespace std;
 
 typedef list<int>* Graph;
 typedef pair<int,int> Edge;
+typedef map< int, list<int> > Connected_Components;
 typedef map<Edge,double> weights;
 
 typedef enum {
@@ -66,6 +67,16 @@ bool has_cycle(Graph graph, int number_of_vertices);
 
 bool detect_cycles(Graph graph, int number_of_vertices, int vertex_v, bool* & visited);
 
-list<int> topological_sort(Graph graph, int number_of_vertices);
+list<int> topological_sort_degree_strategy(Graph graph, int number_of_vertices);
+
+list<int> topological_sort_dfs_strategy(Graph graph, int number_of_vertices);
+
+void topological_dfs(Graph graph, int number_of_vertices, int vertex, color* & colors, list<int> & total_order);
+
+Connected_Components connected_components(Graph graph, int number_of_vertices);
+
+int** transitive_closure(Graph graph, int number_of_vertices);
+
+int** simple_reachability_matrix(Graph graph, int number_of_vertices);
 
 #endif
