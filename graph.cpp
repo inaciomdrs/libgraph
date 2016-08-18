@@ -25,12 +25,32 @@ Graph build_graph(list<Edge> edge_list, int vertex_quantity){
 	return graph;
 }
 
+Graph transpose_of(Graph graph, int number_of_vertices){
+	Graph t_graph = new list<int>[number_of_vertices];
+
+	list<int> v_neighbours;
+
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		v_neighbours = neighbours(graph,i);
+
+		for (list<int>::iterator u = v_neighbours.begin(); u != v_neighbours.end(); ++u)
+		{
+			t_graph[*u].push_back(i);
+		}
+	}
+
+	return t_graph;
+}
+
 graph_data initialize_graph_data(int size){
 	graph_data data;
 	
-	data.colors    = new color[size];
-	data.parents   = new int[size];
-	data.distances = new double[size];
+	data.colors      = new color[size];
+	data.parents     = new int[size];
+	data.distances   = new double[size];
+	data.start_time  = new int[size];
+	data.finish_time = new int[size];
 
 	return data;
 }
@@ -74,24 +94,53 @@ graph_data dfs(Graph graph, int number_of_vertices, int start_vertex){
 		traverse_data.distances[i] = 0;
 	}
 
-	dfs_visit(graph,number_of_vertices,start_vertex,traverse_data);
+	int time = INIT_TIME;
+	
+	dfs_visit(graph,number_of_vertices,start_vertex,traverse_data,time);
 
 	return traverse_data;
 }
 
-void dfs_visit(Graph graph, int number_of_vertices, int start_vertex, graph_data & data){
+graph_data dfs_complete(Graph graph, int number_of_vertices){
+	graph_data traverse_data = initialize_graph_data(number_of_vertices);
+
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		traverse_data.colors[i] = white;
+		traverse_data.parents[i] = NO_PARENT;
+		traverse_data.distances[i] = 0;
+	}
+
+	int time = INIT_TIME;
+
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		if(traverse_data.colors[i] == white)
+		{
+			dfs_visit(graph,number_of_vertices,i,traverse_data,time);
+		}
+	}
+
+	return traverse_data;
+}
+
+void dfs_visit(Graph graph, int number_of_vertices, int start_vertex, graph_data & data, int & time){
 	data.colors[start_vertex] = gray;
+	data.start_time[start_vertex] = time;
+	time++;
 
 	list<int> v_neighbours = neighbours(graph,start_vertex);
 
 	for(list<int>::iterator it = v_neighbours.begin(); it != v_neighbours.end(); it++){
 		if(data.colors[*it] == white){
 			data.parents[*it] = start_vertex;
-			dfs_visit(graph,number_of_vertices,*it,data);
+			dfs_visit(graph,number_of_vertices,*it,data,time);
 		}
 	}
 
 	data.colors[start_vertex] = black;
+	data.finish_time[start_vertex] = time;
+	time++;
 }
 
 graph_data bfs(Graph graph, int number_of_vertices, int start_vertex){
@@ -314,13 +363,6 @@ list<int> topological_sort_degree_strategy(Graph graph, int number_of_vertices){
 		}		
 	}
 
-	/*for (int i = 0; i < number_of_vertices; ++i)
-	{
-		if(!included[i]){
-			total_order.push_back(i);
-		}
-	}*/
-
 	return total_order;
 }
 
@@ -355,49 +397,36 @@ void topological_dfs(Graph graph, int number_of_vertices, int vertex, color* & c
 	total_order.push_front(vertex);
 }
 
-Connected_Components connected_components(Graph graph, int number_of_vertices){
-	
+Connected_Components connected_components_brute_force(Graph graph, int number_of_vertices){
 	Connected_Components components;
 
-	int **closure = transitive_closure(graph,number_of_vertices);
+	int** t_closure = transitive_closure(graph,number_of_vertices);
+	int** mutual_reach_matrix = mutual_reachability_matrix(t_closure,number_of_vertices);
 
-	color *colors = new color[number_of_vertices];
-	int *parents = new int[number_of_vertices];
+	bool* visited = new bool[number_of_vertices];
+	fill(visited,visited+number_of_vertices,false);
+
+	components.push_back(new list<int>);
 
 	for (int i = 0; i < number_of_vertices; ++i)
 	{
-		colors[i] = white;
-		parents[i] = NO_PARENT;
-	}
+		if(visited[i]){
+			continue;
+		}
 
-	queue<int> Q;
-	int vertex;
-
-	Q.push(FIRST_VERTEX);
-
-	while(!Q.empty()){
-		vertex = Q.front();
-		for (int i = 0; i < number_of_vertices; ++i)
+		components.push_back(new list<int>);
+		components.back()->push_back(i);
+		for (int j = i + 1; j < number_of_vertices; ++j)
 		{
-			if((closure[vertex][i] == TRUE) && (colors[i] == white))
-			{
-				if(parents[vertex] == NO_PARENT)
-				{
-					components[vertex].push_back(i);
-				} 
-				else
-				{
-					components[parents[vertex]].push_back(i);
-				}
-
-				parents[i] = vertex;
-				colors[i] = gray;
-				Q.push(i);
+			if(mutual_reach_matrix[i][j] == TRUE){
+				components.back()->push_back(j);
+				visited[j] = true;
 			}
 		}
-		colors[vertex] = black;
-	}
 
+		visited[i] = true;
+	}
+	
 	return components;
 }
 
@@ -406,19 +435,49 @@ int** transitive_closure(Graph graph, int number_of_vertices){
 
 	for (int i = 0; i < number_of_vertices; ++i)
 	{
-		for (int j = 0; j < number_of_vertices; ++j)
+		reachability_matrix[i][i] = TRUE;
+	}
+
+	for (double n = 0; n < log2(number_of_vertices); ++n)
+	{
+		for (int i = 0; i < number_of_vertices; ++i)
 		{
-			for (int k = 0; k < number_of_vertices; ++k)
+			for (int j = 0; j < number_of_vertices; ++j)
 			{
-				if((reachability_matrix[i][j] == TRUE) && (reachability_matrix[j][k] == TRUE))
+				if(reachability_matrix[i][j] == TRUE)
 				{
-					reachability_matrix[i][k] = TRUE;
+					for (int k = 0; k < number_of_vertices; ++k)
+					{	
+						if(reachability_matrix[j][k] == TRUE)
+						{
+							reachability_matrix[i][k] = TRUE;
+						}
+					}
 				}
+			}
+		}
+	}	
+
+	return reachability_matrix;	
+}
+
+int** mutual_reachability_matrix(int **transitive_closure, int size){
+	int **matrix = new int*[size];
+
+	for (int i = 0; i < size; ++i)
+	{
+		matrix[i] = new int[size];
+		for (int j = 0; j < size; ++j)
+		{
+			if((transitive_closure[i][j] == TRUE) && (transitive_closure[j][i] == TRUE)){
+				matrix[i][j] = TRUE;
+			} else {
+				matrix[i][j] = FALSE;
 			}
 		}
 	}
 
-	return reachability_matrix;	
+	return matrix;
 }
 
 int** simple_reachability_matrix(Graph graph, int number_of_vertices){

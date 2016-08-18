@@ -19,7 +19,7 @@ void print_graph(Graph graph, int size){
 void run_dfs(Graph graph, int size){
 	cout << "Running dfs..." << endl;
 
-	graph_data dfs_data = dfs(graph,size,FIRST_VERTEX);
+	graph_data dfs_data = dfs_complete(graph,size);
 
 	cout << "Colors: ";
 	for (int i = 0; i < size; ++i)
@@ -28,11 +28,17 @@ void run_dfs(Graph graph, int size){
 	}
 	cout << endl;
 
-	cout << "Parents: ";
+	cout << "Parents:\n";
 	for (int i = 0; i < size; ++i)
 	{
 		cout << "parent[" << i << "]: " << dfs_data.parents[i] << endl;
 	}
+
+	cout << "Finish Times:\n";
+	for (int i = 0; i < size; ++i)
+	{
+		cout << "F_Time[" << i << "]: " << dfs_data.finish_time[i] << endl;
+	}	
 }
 
 void run_bfs(Graph graph, int size){
@@ -47,13 +53,13 @@ void run_bfs(Graph graph, int size){
 	}
 	cout << endl;
 
-	cout << "Parents: ";
+	cout << "Parents:\n";
 	for (int i = 0; i < size; ++i)
 	{
 		cout << "parent[" << i << "]: " << bfs_data.parents[i] << endl;
 	}
 
-	cout << "Distances: ";
+	cout << "Distances:\n";
 	for (int i = 0; i < size; ++i)
 	{
 		cout << "distances[" << i << "," << " 0]: " << bfs_data.distances[i] << endl;
@@ -121,6 +127,7 @@ int main(int argc, char **argv)
 	}
 
 	Graph graph = build_graph(edges,size);
+	Graph graph_transposed = transpose_of(graph,size);
 
 	//int **matrix = new int*[size];
 
@@ -136,6 +143,11 @@ int main(int argc, char **argv)
 	// Graph graph = build_graph(matrix,size);
 	
 	print_graph(graph,size);
+	cout << "\n==================\n";
+	print_graph(graph_transposed,size);
+	cout << "\n";
+
+	run_dfs(graph,size);
 
 	cout << "Degrees" << endl;
 
@@ -200,15 +212,25 @@ int main(int argc, char **argv)
 			cout << endl;
 		}	
 
-	cout << "Connected Components" << endl;
-	Connected_Components components = connected_components(graph,size);
+	cout << "Mutual Reachability Matrix" << endl;
+	matrix = mutual_reachability_matrix(matrix,size);
+	for (int i = 0; i < size; ++i)
+		{
+			for (int j = 0; j < size; ++j)
+			{
+				cout << matrix[i][j] << " ";
+			}
+			cout << endl;
+		}
 
-	list<int> elements;
+	cout << "Connected Components" << endl;
+	Connected_Components components = connected_components_brute_force(graph,size);
+
+	list<int>* elements;
 	for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
 	{
-		cout << "[" << i->first << "] ~ ";
-		elements = i->second;
-		for (list<int>::iterator elem = elements.begin(); elem != elements.end(); ++elem)
+		elements = *i;
+		for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
 		{
 			cout << *elem << " ";
 		}
