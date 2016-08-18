@@ -29,12 +29,20 @@ typedef struct {
 	int    *finish_time;
 } graph_data;
 
+typedef struct {
+	int number;
+	int weight;
+} weighted_int;
+
 #define FALSE 0
 #define TRUE  1
 
 #define FIRST_VERTEX 0
 
 #define INIT_TIME 1
+
+#define FIRST_COLOR 0
+#define NO_COLOR -1
 
 #define NO_PARENT -1
 
@@ -45,6 +53,8 @@ Graph build_graph(list<Edge> edge_list, int vertex_quantity);
 Graph transpose_of(Graph graph, int number_of_vertices);
 
 graph_data initialize_graph_data(int size);
+
+bool compare_weighted_ints(weighted_int a, weighted_int b);
 
 list<int> neighbours(Graph graph, int vertex);
 
@@ -59,6 +69,10 @@ graph_data dfs(Graph graph, int number_of_vertices, int start_vertex);
 graph_data dfs_complete(Graph graph, int number_of_vertices);
 
 void dfs_visit(Graph graph, int number_of_vertices, int start_vertex, graph_data & data, int & time);
+
+int* dfs_complete_with_colors(Graph graph, int number_of_vertices, weighted_int* order, int & max_color);
+
+void dfs_visit_with_colors(Graph graph, int number_of_vertices, int start_vertex, int* & colors, int color, bool* & visited);
 
 graph_data bfs(Graph graph, int number_of_vertices, int start_vertex);
 
@@ -83,6 +97,8 @@ list<int> topological_sort_dfs_strategy(Graph graph, int number_of_vertices);
 void topological_dfs(Graph graph, int number_of_vertices, int vertex, color* & colors, list<int> & total_order);
 
 Connected_Components connected_components_brute_force(Graph graph, int number_of_vertices);
+
+Connected_Components connected_components_kosaraju_sharir(Graph graph, int number_of_vertices);
 
 int** transitive_closure(Graph graph, int number_of_vertices);
 

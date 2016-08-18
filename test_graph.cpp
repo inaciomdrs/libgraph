@@ -223,10 +223,23 @@ int main(int argc, char **argv)
 			cout << endl;
 		}
 
-	cout << "Connected Components" << endl;
+	cout << "Connected Components (BRUTE FORCE)" << endl;
 	Connected_Components components = connected_components_brute_force(graph,size);
 
 	list<int>* elements;
+	for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
+	{
+		elements = *i;
+		for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
+		{
+			cout << *elem << " ";
+		}
+		cout << endl;
+	}
+
+	cout << "Connected Components (KOSARAJU AND SHARIR)" << endl;
+	components = connected_components_kosaraju_sharir(graph,size);
+	
 	for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
 	{
 		elements = *i;
