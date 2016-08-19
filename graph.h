@@ -70,7 +70,7 @@ graph_data dfs_complete(Graph graph, int number_of_vertices);
 
 void dfs_visit(Graph graph, int number_of_vertices, int start_vertex, graph_data & data, int & time);
 
-int* dfs_complete_with_colors(Graph graph, int number_of_vertices, weighted_int* order, int & max_color);
+int* dfs_complete_with_colors(Graph graph, int number_of_vertices, weighted_int* order, int & color);
 
 void dfs_visit_with_colors(Graph graph, int number_of_vertices, int start_vertex, int* & colors, int color, bool* & visited);
 
@@ -95,6 +95,8 @@ list<int> topological_sort_degree_strategy(Graph graph, int number_of_vertices);
 list<int> topological_sort_dfs_strategy(Graph graph, int number_of_vertices);
 
 void topological_dfs(Graph graph, int number_of_vertices, int vertex, color* & colors, list<int> & total_order);
+
+Connected_Components connected_components_undirected_graph(Graph graph, int number_of_vertices);
 
 Connected_Components connected_components_brute_force(Graph graph, int number_of_vertices);
 

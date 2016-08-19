@@ -1,3 +1,4 @@
+#include <iostream>
 #include "graph.h"
 
 Graph build_graph(int** matrix, int size) {
@@ -147,42 +148,33 @@ void dfs_visit(Graph graph, int number_of_vertices, int start_vertex, graph_data
 	time++;
 }
 
-int* dfs_complete_with_colors(Graph graph, int number_of_vertices, weighted_int* order, int & max_color){
+int* dfs_complete_with_colors(Graph graph, int number_of_vertices, weighted_int* order, int & color){
 	int *colors = new int[number_of_vertices];
-	bool *visited = new bool[number_of_vertices];
-	
-	fill(colors,colors+number_of_vertices,NO_COLOR);
+	bool *visited = new bool[number_of_vertices];	
+
 	fill(visited,visited+number_of_vertices,false);
 	
 	for (int i = 0; i < number_of_vertices; ++i)
 	{
-		if(colors[i] != NO_COLOR)
+		if(visited[order[i].number] == false)
 		{
-			max_color++;
-			continue;
-		} 
-		else
-		{
-			colors[i] = max_color;
-			dfs_visit_with_colors(graph,number_of_vertices,order[i].number,colors,max_color,visited);	
+			dfs_visit_with_colors(graph,number_of_vertices,order[i].number,colors,++color,visited);	
 		}
 	}
-
 	return colors;
 }
 
 void dfs_visit_with_colors(Graph graph, int number_of_vertices, int start_vertex, int* & colors, int color, bool* & visited){
-	
+	colors[start_vertex] = color;
+	visited[start_vertex] = true;
+
 	list<int> v_neighbours = neighbours(graph,start_vertex);
 
 	for(list<int>::iterator it = v_neighbours.begin(); it != v_neighbours.end(); it++){
 		if(visited[*it] == false){
-			colors[*it] = color;
-			visited[*it] = true;
 			dfs_visit_with_colors(graph,number_of_vertices,*it,colors,color,visited);
 		}
 	}
-
 }
 
 graph_data bfs(Graph graph, int number_of_vertices, int start_vertex){
@@ -439,6 +431,40 @@ void topological_dfs(Graph graph, int number_of_vertices, int vertex, color* & c
 	total_order.push_front(vertex);
 }
 
+Connected_Components connected_components_undirected_graph(Graph graph, int number_of_vertices){
+	weighted_int* visit_order = new weighted_int[number_of_vertices];
+
+	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		visit_order[i].number = i;
+	}
+
+	int num_colors = NO_COLOR;
+
+	int *components = dfs_complete_with_colors(graph,number_of_vertices,visit_order,num_colors);
+
+	map< int, list<int>* > groups;
+
+	for (int i = 0; i < num_colors+1; ++i)
+	{
+		groups[i] = new list<int>;
+	}
+
+ 	for (int i = 0; i < number_of_vertices; ++i)
+	{
+		groups[components[i]]->push_back(i);
+	}
+
+	Connected_Components connected_components;
+
+	for (map< int, list<int>* >::iterator group = groups.begin(); group != groups.end(); ++group)
+	{
+		connected_components.push_back(group->second);
+	}
+
+	return connected_components;
+}
+
 Connected_Components connected_components_brute_force(Graph graph, int number_of_vertices){
 	Connected_Components components;
 
@@ -447,8 +473,6 @@ Connected_Components connected_components_brute_force(Graph graph, int number_of
 
 	bool* visited = new bool[number_of_vertices];
 	fill(visited,visited+number_of_vertices,false);
-
-	components.push_back(new list<int>);
 
 	for (int i = 0; i < number_of_vertices; ++i)
 	{
@@ -485,7 +509,7 @@ Connected_Components connected_components_kosaraju_sharir(Graph graph, int numbe
 
 	sort(visit_order,visit_order+number_of_vertices,compare_weighted_ints);
 
-	int num_colors = FIRST_COLOR;
+	int num_colors = NO_COLOR;
 
 	int *components = dfs_complete_with_colors(t_graph,number_of_vertices,visit_order,num_colors);
 

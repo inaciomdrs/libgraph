@@ -223,12 +223,17 @@ int main(int argc, char **argv)
 			cout << endl;
 		}
 
-	cout << "Connected Components (BRUTE FORCE)" << endl;
-	Connected_Components components = connected_components_brute_force(graph,size);
+
+	Connected_Components components;
+
+	/*cout << "Connected Components (UNDIRECTED GRAPH)" << endl;
+	components = connected_components_undirected_graph(graph,size);
 
 	list<int>* elements;
+	int counter = 0;
 	for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
 	{
+		counter++;
 		elements = *i;
 		for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
 		{
@@ -236,12 +241,31 @@ int main(int argc, char **argv)
 		}
 		cout << endl;
 	}
+	cout << counter << " " << " elements" << endl;*/
+
+	cout << "Connected Components (BRUTE FORCE)" << endl;
+	components = connected_components_brute_force(graph,size);
+
+	list<int>* elements;
+	int counter = 0;
+	for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
+	{
+		counter++;
+		elements = *i;
+		for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
+		{
+			cout << *elem << " ";
+		}
+		cout << endl;
+	}
+	cout << counter << " " << " elements" << endl;
 
 	cout << "Connected Components (KOSARAJU AND SHARIR)" << endl;
 	components = connected_components_kosaraju_sharir(graph,size);
-	
+	counter = 0;
 	for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
 	{
+		counter++;
 		elements = *i;
 		for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
 		{
@@ -249,6 +273,7 @@ int main(int argc, char **argv)
 		}
 		cout << endl;
 	}
+	cout << counter << " " << " elements" << endl;
 
 	return 0;
 }
