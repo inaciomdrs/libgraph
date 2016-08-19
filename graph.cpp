@@ -1,4 +1,3 @@
-#include <iostream>
 #include "graph.h"
 
 Graph build_graph(int** matrix, int size) {
