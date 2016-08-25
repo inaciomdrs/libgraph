@@ -56,6 +56,8 @@ graph_data initialize_graph_data(int size);
 
 bool compare_weighted_ints(weighted_int a, weighted_int b);
 
+bool compare_edges(Edge e, Edge f);
+
 list<int> neighbours(Graph graph, int vertex);
 
 int in_degree(Graph graph, int number_of_vertices, int vertex);
@@ -79,6 +81,8 @@ graph_data bfs(Graph graph, int number_of_vertices, int start_vertex);
 bool is_reachable(Graph graph, int number_of_vertices, int vertex_u, int vertex_v);
 
 list<int> path_between(Graph graph, int number_of_vertices, int vertex_u, int vertex_v);
+
+bool path_exists(Graph graph, int number_of_vertices, list<int> path);
 
 void make_path(int vertex_u, int vertex_v, int *parents, list<int> & path);
 

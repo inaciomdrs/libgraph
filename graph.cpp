@@ -59,6 +59,10 @@ bool compare_weighted_ints(weighted_int a, weighted_int b){
 	return a.weight > b.weight;
 }
 
+bool compare_edges(Edge e, Edge f){
+	return ((e.first == f.first) && (e.second == f.second));
+}
+
 list<int> neighbours(Graph graph, int vertex){
 	return graph[vertex];
 }
@@ -260,6 +264,17 @@ list<int> path_between(Graph graph, int number_of_vertices, int vertex_u, int ve
 
 	return path;
 
+}
+
+bool path_exists(Graph graph, int number_of_vertices, list<int> path){
+	list<int> neighbourhood = neighbours(graph,*path.begin());
+	for (list<int>::iterator p = ++path.begin(); p != path.end(); ++p)
+	{
+		if(find(neighbourhood.begin(),neighbourhood.end(),*p) == neighbourhood.end()){
+			return false;
+		}
+	}
+	return true;
 }
 
 void make_path(int vertex_u, int vertex_v, int *parents, list<int> & path){
