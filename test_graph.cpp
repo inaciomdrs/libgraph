@@ -111,169 +111,174 @@ void check_path(Graph graph, int size){
 
 int main(int argc, char **argv)
 {
-	int size;
-	cin >> size;
-
-	list<Edge> edges;
-
-	int vertex_u;
-	int vertex_v;
-
-	int edges_quantity = 0;
-
-	while(cin >> vertex_u >> vertex_v)
+	int n; cin >> n;
+	for (int i = 0; i < n; ++i)
 	{
-		edges.push_back(make_pair(--vertex_u,--vertex_v));
-	}
+		int size;
+		cin >> size;
 
-	Graph graph = build_graph(edges,size);
-	Graph graph_transposed = transpose_of(graph,size);
+		// list<Edge> edges;
 
-	//int **matrix = new int*[size];
+		// int vertex_u;
+		// int vertex_v;
 
-	/*for(int i = 0; i < size; i++)
-	{
-		matrix[i] = new int[size];
-		for (int j = 0; j < size; ++j)
+		// int edges_quantity = 0;
+
+		// while(cin >> vertex_u >> vertex_v)
+		// {
+		// 	edges.push_back(make_pair(--vertex_u,--vertex_v));
+		// }
+
+		// Graph graph = build_graph(edges,size);
+		// Graph graph_transposed = transpose_of(graph,size);
+
+		int **matrix = new int*[size];
+
+		for(int i = 0; i < size; i++)
 		{
-			cin >> matrix[i][j];
-		}
-	}*/
-
-	// Graph graph = build_graph(matrix,size);
-	
-	print_graph(graph,size);
-	cout << "\n==================\n";
-	print_graph(graph_transposed,size);
-	cout << "\n";
-
-	run_dfs(graph,size);
-
-	cout << "Degrees" << endl;
-
-	for (int i = 0; i < size; ++i)
-	{
-		cout << i << " - IN: " << in_degree(graph,size,i) << " | OUT: " << out_degree(graph,size,i) << endl;
-	}
-
-	cout << "Is this graph connected? ";
-
-	if(is_connected(graph,size)){
-		cout << "Yes";
-	} else {
-		cout << "No";
-	}
-
-	cout << endl;
-
-	cout << "Is there any cycle in this graph? ";
-
-	if(has_cycle(graph,size)){
-		cout << "Yes";
-	} else {
-		cout << "No";
-	}
-
-	cout << endl;
-
-	cout << "Topological ordering (degree strategy) for this graph\n";
-	list<int> order = topological_sort_degree_strategy(graph,size);
-	for(list<int>::iterator it = order.begin(); it != order.end(); it++){
-		cout << *it << " ";
-	}
-	cout << endl;
-
-	cout << "Topological ordering (dfs strategy) for this graph\n";
-	order = topological_sort_dfs_strategy(graph,size);
-	for(list<int>::iterator it = order.begin(); it != order.end(); it++){
-		cout << *it << " ";
-	}
-	cout << endl;
-
-	cout << "Reachability Matrix" << endl;
-	int **matrix = simple_reachability_matrix(graph,size);
-	for (int i = 0; i < size; ++i)
-		{
+			matrix[i] = new int[size];
 			for (int j = 0; j < size; ++j)
 			{
-				cout << matrix[i][j] << " ";
+				cin >> matrix[i][j];
 			}
-			cout << endl;
 		}
 
-	cout << "Transitive Closure" << endl;
-	matrix = transitive_closure(graph,size);
-	for (int i = 0; i < size; ++i)
-		{
-			for (int j = 0; j < size; ++j)
-			{
-				cout << matrix[i][j] << " ";
-			}
-			cout << endl;
-		}	
+		Graph graph = build_graph(matrix,size);
+		
+		print_graph(graph,size);
+		cout << "\n==================\n";
 
-	cout << "Mutual Reachability Matrix" << endl;
-	matrix = mutual_reachability_matrix(matrix,size);
-	for (int i = 0; i < size; ++i)
-		{
-			for (int j = 0; j < size; ++j)
-			{
-				cout << matrix[i][j] << " ";
-			}
-			cout << endl;
-		}
-
-
-	Connected_Components components;
-
-	/*cout << "Connected Components (UNDIRECTED GRAPH)" << endl;
-	components = connected_components_undirected_graph(graph,size);
-
-	list<int>* elements;
-	int counter = 0;
-	for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
-	{
-		counter++;
-		elements = *i;
-		for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
-		{
-			cout << *elem << " ";
-		}
-		cout << endl;
 	}
-	cout << counter << " " << " elements" << endl;*/
+	// print_graph(graph_transposed,size);
+	// cout << "\n";
 
-	cout << "Connected Components (BRUTE FORCE)" << endl;
-	components = connected_components_brute_force(graph,size);
+	// run_dfs(graph,size);
 
-	list<int>* elements;
-	int counter = 0;
-	for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
-	{
-		counter++;
-		elements = *i;
-		for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
-		{
-			cout << *elem << " ";
-		}
-		cout << endl;
-	}
-	cout << counter << " " << " elements" << endl;
+	// cout << "Degrees" << endl;
 
-	cout << "Connected Components (KOSARAJU AND SHARIR)" << endl;
-	components = connected_components_kosaraju_sharir(graph,size);
-	counter = 0;
-	for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
-	{
-		counter++;
-		elements = *i;
-		for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
-		{
-			cout << *elem << " ";
-		}
-		cout << endl;
-	}
-	cout << counter << " " << " elements" << endl;
+	// for (int i = 0; i < size; ++i)
+	// {
+	// 	cout << i << " - IN: " << in_degree(graph,size,i) << " | OUT: " << out_degree(graph,size,i) << endl;
+	// }
+
+	// cout << "Is this graph connected? ";
+
+	// if(is_connected(graph,size)){
+	// 	cout << "Yes";
+	// } else {
+	// 	cout << "No";
+	// }
+
+	// cout << endl;
+
+	// cout << "Is there any cycle in this graph? ";
+
+	// if(has_cycle(graph,size)){
+	// 	cout << "Yes";
+	// } else {
+	// 	cout << "No";
+	// }
+
+	// cout << endl;
+
+	// cout << "Topological ordering (degree strategy) for this graph\n";
+	// list<int> order = topological_sort_degree_strategy(graph,size);
+	// for(list<int>::iterator it = order.begin(); it != order.end(); it++){
+	// 	cout << *it << " ";
+	// }
+	// cout << endl;
+
+	// cout << "Topological ordering (dfs strategy) for this graph\n";
+	// order = topological_sort_dfs_strategy(graph,size);
+	// for(list<int>::iterator it = order.begin(); it != order.end(); it++){
+	// 	cout << *it << " ";
+	// }
+	// cout << endl;
+
+	// cout << "Reachability Matrix" << endl;
+	// int **matrix = simple_reachability_matrix(graph,size);
+	// for (int i = 0; i < size; ++i)
+	// 	{
+	// 		for (int j = 0; j < size; ++j)
+	// 		{
+	// 			cout << matrix[i][j] << " ";
+	// 		}
+	// 		cout << endl;
+	// 	}
+
+	// cout << "Transitive Closure" << endl;
+	// matrix = transitive_closure(graph,size);
+	// for (int i = 0; i < size; ++i)
+	// 	{
+	// 		for (int j = 0; j < size; ++j)
+	// 		{
+	// 			cout << matrix[i][j] << " ";
+	// 		}
+	// 		cout << endl;
+	// 	}	
+
+	// cout << "Mutual Reachability Matrix" << endl;
+	// matrix = mutual_reachability_matrix(matrix,size);
+	// for (int i = 0; i < size; ++i)
+	// 	{
+	// 		for (int j = 0; j < size; ++j)
+	// 		{
+	// 			cout << matrix[i][j] << " ";
+	// 		}
+	// 		cout << endl;
+	// 	}
+
+
+	// Connected_Components components;
+
+	// /*cout << "Connected Components (UNDIRECTED GRAPH)" << endl;
+	// components = connected_components_undirected_graph(graph,size);
+
+	// list<int>* elements;
+	// int counter = 0;
+	// for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
+	// {
+	// 	counter++;
+	// 	elements = *i;
+	// 	for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
+	// 	{
+	// 		cout << *elem << " ";
+	// 	}
+	// 	cout << endl;
+	// }
+	// cout << counter << " " << " elements" << endl;*/
+
+	// cout << "Connected Components (BRUTE FORCE)" << endl;
+	// components = connected_components_brute_force(graph,size);
+
+	// list<int>* elements;
+	// int counter = 0;
+	// for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
+	// {
+	// 	counter++;
+	// 	elements = *i;
+	// 	for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
+	// 	{
+	// 		cout << *elem << " ";
+	// 	}
+	// 	cout << endl;
+	// }
+	// cout << counter << " " << " elements" << endl;
+
+	// cout << "Connected Components (KOSARAJU AND SHARIR)" << endl;
+	// components = connected_components_kosaraju_sharir(graph,size);
+	// counter = 0;
+	// for (Connected_Components::iterator i = components.begin(); i != components.end(); ++i)
+	// {
+	// 	counter++;
+	// 	elements = *i;
+	// 	for (list<int>::iterator elem = elements->begin(); elem != elements->end(); ++elem)
+	// 	{
+	// 		cout << *elem << " ";
+	// 	}
+	// 	cout << endl;
+	// }
+	// cout << counter << " " << " elements" << endl;
 
 	return 0;
 }

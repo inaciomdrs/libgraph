@@ -12,11 +12,6 @@ using namespace std;
 #ifndef __GRAPH_H__
 #define __GRAPH_H__
 
-typedef list<int>* Graph;
-typedef pair<int,int> Edge;
-typedef list< list<int>* > Connected_Components;
-typedef map<Edge,double> weights;
-
 typedef enum {
 	white, gray, black
 } color;
@@ -31,8 +26,13 @@ typedef struct {
 
 typedef struct {
 	int number;
-	int weight;
+	double weight;
 } weighted_int;
+
+typedef list<int>* Graph;
+typedef pair<int,int> Edge;
+typedef list< list<int>* > Connected_Components;
+typedef map<Edge,double> weights;
 
 #define FALSE 0
 #define TRUE  1

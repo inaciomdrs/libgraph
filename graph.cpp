@@ -132,23 +132,23 @@ graph_data dfs_complete(Graph graph, int number_of_vertices){
 	return traverse_data;
 }
 
-void dfs_visit(Graph graph, int number_of_vertices, int start_vertex, graph_data & data, int & time){
+void dfs_visit(Graph graph, int number_of_vertices, int start_vertex, graph_data & data, int & time_){
 	data.colors[start_vertex] = gray;
-	data.start_time[start_vertex] = time;
-	time++;
+	data.start_time[start_vertex] = time_;
+	time_++;
 
 	list<int> v_neighbours = neighbours(graph,start_vertex);
 
 	for(list<int>::iterator it = v_neighbours.begin(); it != v_neighbours.end(); it++){
 		if(data.colors[*it] == white){
 			data.parents[*it] = start_vertex;
-			dfs_visit(graph,number_of_vertices,*it,data,time);
+			dfs_visit(graph,number_of_vertices,*it,data,time_);
 		}
 	}
 
 	data.colors[start_vertex] = black;
-	data.finish_time[start_vertex] = time;
-	time++;
+	data.finish_time[start_vertex] = time_;
+	time_++;
 }
 
 int* dfs_complete_with_colors(Graph graph, int number_of_vertices, weighted_int* order, int & color){
