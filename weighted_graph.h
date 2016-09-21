@@ -9,6 +9,8 @@
 #include <queue>
 #include <utility>
 
+#include "heap.h"
+
 using namespace std;
 
 #ifndef __WEIGHTED_GRAPH_H__
@@ -36,5 +38,7 @@ typedef list<int> path;
 void print_w_graph(w_graph G, int vertex_quantity);
 
 bool bellman_ford(list<w_edge> edges, int vertex_quantity, int source, int* & parents, double* & distances);
+
+void dijkstra(w_graph G, int vertex_quantity, int source, int* & parents, double* & distances);
 
 #endif

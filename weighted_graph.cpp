@@ -41,3 +41,36 @@ bool bellman_ford(list<w_edge> edges, int vertex_quantity, int source, int* & pa
 
 	return true;
 }
+
+void dijkstra(w_graph G, int vertex_quantity, int source, int* & parents, double* & distances){
+	for (int i = 0; i < vertex_quantity; ++i)
+	{
+		parents[i] = NO_PARENT;
+		distances[i] = INT_MAX;
+	}
+
+	distances[source] = 0;
+
+	bool *visited = new bool[vertex_quantity];
+	fill(visited,visited+vertex_quantity,false);
+
+	queue<int> Q;
+
+	Q.push(source);
+
+	int node;
+	while(!Q.empty()){
+		node = Q.front();
+		Q.pop();
+		visited[node] = true;
+
+		for (w_int_iterator w_it = G[node].begin(); w_it != G[node].end(); ++w_it)
+		{
+			if( ( distances[w_it->value] > (distances[node] + w_it->weight) ) && ( visited[w_it->value] == false ) ){
+				distances[w_it->value] = distances[node] + w_it->weight;
+				parents[w_it->value]   = node;
+				Q.push(w_it->value);
+			}
+		}		
+	}
+}

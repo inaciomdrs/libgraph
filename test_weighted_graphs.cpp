@@ -32,11 +32,23 @@ int main(int argc, char const *argv[])
 	if(bellman_ford(edges, N, 0, parents, distances)){
 		for (int i = 0; i < N; ++i)
 		{
-			printf("Distance to %d: %.1lf\n",i,distances[i]);
+			//printf("Distance to %d: %.1lf\n",i,distances[i]);
+			printf("Parent of %d: %d\n",i,parents[i]);
 		}
 	}
 
+	printf("==============\n");
 
+	parents   = new int[N];
+	distances = new double[N];
+
+	dijkstra(G, N, 0, parents, distances);
+
+	for (int i = 0; i < N; ++i)
+	{
+		//printf("Distance to %d: %.1lf\n",i,distances[i]);
+		printf("Parent of %d: %d\n",i,parents[i]);
+	}
 
 	delete parents;
 	delete distances;
