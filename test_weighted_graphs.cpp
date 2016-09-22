@@ -42,7 +42,10 @@ int main(int argc, char const *argv[])
 	parents   = new int[N];
 	distances = new double[N];
 
-	dijkstra(G, N, 0, parents, distances);
+	w_int source_node;
+	source_node.value = 0;
+
+	dijkstra(G, N, source_node, parents, distances);
 
 	for (int i = 0; i < N; ++i)
 	{

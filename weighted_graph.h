@@ -35,10 +35,12 @@ typedef list<int> path;
 #define NO_WEIGHT 0
 #define NO_PARENT -1
 
+bool compare_w_int(w_int a, w_int b);
+
 void print_w_graph(w_graph G, int vertex_quantity);
 
 bool bellman_ford(list<w_edge> edges, int vertex_quantity, int source, int* & parents, double* & distances);
 
-void dijkstra(w_graph G, int vertex_quantity, int source, int* & parents, double* & distances);
+void dijkstra(w_graph G, int vertex_quantity, w_int source, int* & parents, double* & distances);
 
 #endif

@@ -1,5 +1,9 @@
 #include "weighted_graph.h"
 
+bool compare_w_int(w_int a, w_int b){
+	return a.weight < b.weight;
+}
+
 void print_w_graph(w_graph G, int vertex_quantity){
 	for (int v = 0; v < vertex_quantity; ++v)
 	{
@@ -42,26 +46,27 @@ bool bellman_ford(list<w_edge> edges, int vertex_quantity, int source, int* & pa
 	return true;
 }
 
-void dijkstra(w_graph G, int vertex_quantity, int source, int* & parents, double* & distances){
+void dijkstra(w_graph G, int vertex_quantity, w_int source, int* & parents, double* & distances){
 	for (int i = 0; i < vertex_quantity; ++i)
 	{
 		parents[i] = NO_PARENT;
 		distances[i] = INT_MAX;
 	}
 
-	distances[source] = 0;
+	distances[source.value] = 0;
 
 	bool *visited = new bool[vertex_quantity];
 	fill(visited,visited+vertex_quantity,false);
 
-	queue<int> Q;
 
-	Q.push(source);
+	vector<w_int> Q;
+
+	enqueue(Q,source,compare_w_int);
 
 	int node;
 	while(!Q.empty()){
-		node = Q.front();
-		Q.pop();
+		node = dequeue(Q,compare_w_int).value;
+
 		visited[node] = true;
 
 		for (w_int_iterator w_it = G[node].begin(); w_it != G[node].end(); ++w_it)
@@ -69,7 +74,7 @@ void dijkstra(w_graph G, int vertex_quantity, int source, int* & parents, double
 			if( ( distances[w_it->value] > (distances[node] + w_it->weight) ) && ( visited[w_it->value] == false ) ){
 				distances[w_it->value] = distances[node] + w_it->weight;
 				parents[w_it->value]   = node;
-				Q.push(w_it->value);
+				enqueue(Q,*w_it,compare_w_int);
 			}
 		}		
 	}
