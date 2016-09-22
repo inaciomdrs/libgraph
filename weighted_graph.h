@@ -43,4 +43,6 @@ bool bellman_ford(list<w_edge> edges, int vertex_quantity, int source, int* & pa
 
 void dijkstra(w_graph G, int vertex_quantity, w_int source, int* & parents, double* & distances);
 
+void floyd_warshall(double** & matrix, int N);
+
 #endif

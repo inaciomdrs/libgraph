@@ -6,6 +6,13 @@ int main(int argc, char const *argv[])
 
 	scanf("%d",&N);
 
+	double** M = new double*[N];
+
+	for (int i = 0; i < N; ++i)
+	{
+		M[i] = new double[N];
+	}
+
 	w_graph G = new list<w_int>[N];
 
 	list<w_edge> edges;
@@ -22,6 +29,8 @@ int main(int argc, char const *argv[])
 
 		edges.push_back(edge);
 		G[edge.u].push_back(wi);
+
+		M[edge.u][edge.v] = edge.weight;
 	}
 
 	print_w_graph(G,N);
@@ -53,8 +62,28 @@ int main(int argc, char const *argv[])
 		printf("Parent of %d: %d\n",i,parents[i]);
 	}
 
+	printf("==============\n");
+
+	floyd_warshall(M,N);
+
+	for (int i = 0; i < N; ++i)
+	{
+		for (int j = 0; j < N; ++j)
+		{
+			printf("%f ",M[i][j]);
+		}
+		printf("\n");
+	}
+
 	delete parents;
 	delete distances;
+
+	for (int i = 0; i < N; ++i)
+	{
+		delete M[i];
+	}
+
+	delete [] M;
 
 	return 0;
 }
