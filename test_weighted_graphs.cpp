@@ -11,6 +11,11 @@ int main(int argc, char const *argv[])
 	for (int i = 0; i < N; ++i)
 	{
 		M[i] = new double[N];
+		for (int j = 0; j < N; ++j)
+		{
+			M[i][j] = INT_MAX;
+		}
+		M[i][i] = 0;
 	}
 
 	w_graph G = new list<w_int>[N];
@@ -70,7 +75,7 @@ int main(int argc, char const *argv[])
 	{
 		for (int j = 0; j < N; ++j)
 		{
-			printf("%f ",M[i][j]);
+			printf("%.0f ",M[i][j]);
 		}
 		printf("\n");
 	}
